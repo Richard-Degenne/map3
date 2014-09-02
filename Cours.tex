@@ -9,9 +9,9 @@
 \usepackage[usenames]{color} % Pour les couleurs
 \usepackage{amssymb} % Pour les symboles
 \usepackage{amsmath} % Pour les maths
+\usepackage{amsthm} % Pour les théorèmes
 \usepackage{fullpage} % Pour les marges
 \usepackage{setspace} % Pour les espaces
-\usepackage{graphicx} % Pour les images
 \usepackage{array} % Pour les tableaux
 
 \setcounter{secnumdepth}{3}
@@ -19,19 +19,16 @@
 \renewcommand\thesection{\Roman{section}}
 \renewcommand\thesubsection{\quad\arabic{subsection}}
 \renewcommand\thesubsubsection{\qquad\alph{subsubsection}}
-
+\newtheorem{example}{Exemple}
 
 % Commandes ponctuelles
 
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\E}{\mathrm{E}}
-\renewcommand{\P}{\mathbb{P}}
-\renewcommand{\H}{\mathrm{H}}
-\newcommand{\Var}{\mathrm{Var}}
-\newcommand{\pop}{_\text{pop}}
-\newcommand{\ech}{_\text{ech}}
-
+\newcommand{\diff}[1]{\,\mathrm{d}#1}
+\renewcommand{\L}[1]{\mathcal{L}\left\{#1\right\}}
+\newcommand{\Li}[1]{\mathcal{L}^{-1}\left\{#1\right\}}
+\onehalfspacing
 \onehalfspacing
 
 %%%%%%%%%%%%
@@ -41,7 +38,7 @@
 \begin{document}
 
 \title{Troisième année --- Méthodes mathématiques}
-\author{Richard \textsc{Degenne}, L3-A}
+\author{Richard \textsc{Degenne}, L3-B}
 \date{\today}
 
 
@@ -53,4 +50,169 @@
 
 \pagebreak
 
+\chapter{Transformée de Laplace}
+
+\section{Introduction --- Définitions}
+
+La résolution d'équations différentielles fait intervenir plusieurs opérations appliquées à $\R$, l'ensemble des réels. Ces opérations sont :
+
+\begin{itemize}
+	\item{L'addition ;}
+	\item{La multiplication ;}
+	\item{La différentiation.}
+\end{itemize}
+
+La transformée de Laplace transforme la différentiation en multiplication, mais modifie l'ensemble $\R$ à l'ensemble des polynômes à coefficients réels. On définit la transformation de Laplace, notée $\mathcal{L}$, par
+\[f(t)\xrightarrow{\mathcal{L}} F(p) = \int_0^\infty f(t)\,e^{-pt}\diff{t}=\L{f(t)}\]
+où $p$ représente le symbole de Laplace.
+
+$F(p)$ est appelée \textbf{image} de $f(t)$. $f(t)$ est appelé \textbf{original} de $F(p)$, s'il existe. Il y a trois conditions à l'existence d'un original :
+
+\begin{itemize}
+	\item{$f(t)$ doit être causale, c'est-à-dire que $f(t)=0\forall t<0$.}
+	\item{$f(t)$ doit être définie et continue sur $\R^+$, sauf en un nombre fini de points de discontinuité de 1\textsuperscript{ère} espèce.\footnote{Une discontinuité est dite de première espèce s'il existe une limite à droite et à gauche.}}
+	\item{$f(t)$ doit être à croissance exponentielle, c'est-à-dire que $\exists c,M \mid\forall t>0,f(t)<M\,e^{ct}$}
+\end{itemize}
+
+On rappelle que $t$ est la variable du domaine temporel et $p=\sigma+j\omega$ une variable complexe. Ainsi, si $f(t)$ est majorée par $M\,e^{ct}$ et $\sigma>c$ alors l'exponentielle est négative et l'intégrale converge. On admettra dans la suite de ce cours que ces conditions sont toujours respectées.
+
+\begin{example}
+	\begin{align*}
+	\L{1} & = \int_0^\infty1\,e^{-pt}\diff{t}\\
+	      & = {\left[-\frac1p\,e^{-pt}\right]}_0^\infty\\
+	      & = \frac1p
+	\end{align*}
+\end{example}
+\begin{example}
+	\begin{align*}
+		\L{\cos t} & = \int_0^\infty\cos t\,e^{-pt}\diff{t}
+	\end{align*}
+	
+	Ici, le calcul est tout de suite plus compliqué, on peut alors utiliser les propriétés de la transformation de Laplace et des tables de transformées. Ici, on pourrait passer par le binôme de Newton et calculer la transformée de l'exponentielle
+	\begin{align*}
+	\L{e^t} & = \int_0^\infty e^t\,e^{-pt}\diff{t}\\
+	        & = \int_0^\infty e^{-(p-1)t}\diff{t}\\
+	        & = \frac1{p-1}
+	\end{align*}
+\end{example}
+
+\section{Propriétés}
+\subsection{Linéarité}
+\[\L{a\,f(t)+b\,g(t)}=a\,\L{f(t)}+b\,\L{g(t)}\]
+
+\subsection{Similitude}
+
+\begin{align*}
+	F(kp) & = \int_0^\infty e^{-pkt}\diff{t}\\
+	      & = \int_0^\infty f\left(\frac\tau k\right)\,e^{-p\tau}\diff{\frac\tau k}\qquad(\tau=kt)\\
+	      & = \frac1k\,\L{f\left(\frac\tau k\right)}
+\end{align*}
+
+De même, $\L{f(kt)}=\frac1k\,F\left(\frac pk\right)$.
+
+\subsection{Translation}
+\subsubsection{Du symbole de Laplace $p$}
+\begin{align*}
+	F(p+a) & = \int_0^\infty f(t)\,e^{-(p+a)t}\diff{t}\\
+	       & = \int_0^\infty e^{-at}f(t)\,e^{-pt}\diff{t}\\
+	       & = \L{e^{-at}f(t)}
+\end{align*}
+
+De même, $\L{e^{-at}f(t)}=F(p+a)$.
+
+\subsubsection{De la variable temporelle $t$}
+
+On apelle \emph{retard} toute valeur $\tau > 0$ telle que $f(t-\tau)=0\forall t<\tau$.
+
+\begin{align*}
+	\L{f(t-\tau)} & = \int_0^\infty f(t-\tau)\,e^{-pt}\diff{t}\\
+	     \L{f(u)} & = \int_0^\infty f(u)\,e^{-p(u+\tau)}\diff{u}\qquad(u=t-\tau)\\
+	              & = e^{-pt}\int_0^\infty f(u)\,e^{-pu}\diff{u}\\
+	              & = e^{-pt}F(p)
+\end{align*}
+
+\begin{example}[Les fonctions périodiques]
+	Soit $f(t)$ une fonction de période $T$. On va ici décomposer la fonction sur chaque période. On définit $f_0(t)=f(t)\forall t\in[0;T] ; 0\forall t\geq T$.
+	\begin{align*}
+		\L{f(t)} & = \L{f_0(t)  +f_0(t-T)      +f_0(t-2T)+\dotsb}\\
+		         & = \L{f_0(t)} +\L{f_0(t-T)}  +\L{f_0(t-2T)}+\dotsb\\
+			 & = F_0(p)     +e^{-pT}F_0(p) +e^{-2pT}F_0(p)+\dotsb\\
+			 & = (1+e^{-pT}+e^{-2pT}+\dotsb)F_0(p)\\
+			 & = \frac{1}{1-e^{-pT}}F_0(p)\\
+	\end{align*}
+	Pour les fonctions périodiques usuelles, il faut plutôt utiliser une table de transformée plutôt que cette méthode.
+\end{example}
+
+\subsection{Dérivation}
+\subsubsection{De l'original}
+\begin{align*}
+	\L{\dot{f}(t)} & = \int_0^\infty\dot{f}(t)\,e^{-pt}\diff{t}\\
+	               & = {\left[f(t)\,e^{-pt}\right]}_0^\infty - \int_0^\infty f(t)\times(-p)e^{-pt}\diff{t}\\
+	               & = pF(p)-f(0^+)
+\end{align*}
+
+On a donc bien transformé la différentiation du domaine temporel en multiplication dans le domaine symbolique. De manière générale, on écrit
+\[\L{f^{(n)}(t)} = p^nF(p)-p^{n-1}f(0^+)-p^{n-2}\dot{f}(0^+)-\dotsb-f^{(n-1)}(0^+)\]
+
+\subsubsection{De l'image}
+\begin{align*}
+	\frac{\partial F}{\partial p} & = \frac\partial{\partial p}\left(\int_0^\infty f(t)\,e^{-pt}\diff{t}\right)\\
+	                              & = \int_0^\infty f(t)\frac{\partial(e^{-pt})}{\partial p}\diff{t}\\
+				      & = -\int_0^\infty t\,f(t)\,e^{-pt}\diff{t}\\
+				      & = -\L{t\,f(t)}\\
+\end{align*}
+
+De même, $\L{t\,f(t)}=-\frac{\partial F}{\partial p}$.
+
+\begin{example}
+	\begin{align*}
+		\L{t}   & = \L{1\times t} = -\frac\partial{\partial p}\left(\frac1p\right)=\frac1{p^2}\\
+		\L{t^2} & = \L{t\times t} = \frac1{p^3}\\
+		\L{t^n} & = \frac1{p^{n+1}}
+	\end{align*}
+\end{example}
+
+\subsection{Comportement asymptotique}
+
+Le but ici est de déterminer le comportement de $f(t)$ à partir de $F(p)$ sans avoir à effectuer la transformation inverse.
+
+\begin{itemize}
+	\item{Si $f(t)$ est une fonction, alors $\lim_{p\to\infty}=0$.}
+	\item{Si $\int_0^\infty f(t)\diff{t}$ converge, alors $\lim_{p\to0}=\int_0^\infty f(t)\diff{t}$.}
+\end{itemize}
+
+\subsubsection{Théorèmes de la valeur initiale et de la valeur finale}
+
+\begin{align*}
+	\lim_{t\to0^+}f(t)    & = \lim_{p\to\infty}pF(p)\\
+	\lim_{t\to\infty}f(t) & = \lim_{p\to0^+}pF(p)\qquad\text{(uniquement si }f(t)\text{ converge)}
+\end{align*}
+
+\section{Inversion de la transformée}
+
+Pour réaliser la transformée de Laplace inverse se calcule généralement à partir d'une table, mais il faut pour cela que la transformée de Laplace soit une application bijective, c'est-à-dire qu'à une fonction temporel ne corresponde qu'une unique image et qu'à une fonction symbolique ne corresponde qu'un unique original. On l'admettra ici, mais c'est le cas.
+
+Soient $f_1(t)$ et $f_2(t)$ ayant respectivement pour transformée $F_1(p)$ et $F_2(p)$. Si on a
+\[\exists p_0\mid\forall p\geq p_0,F_1(p)=F_2(p)\]
+alors on a $f_1=f_2$, sauf peut-être aux points de discontinuité.
+
+\begin{example}
+	Nous savons déjà que $\L{\Gamma(t)}=\frac1p$. On peut dès lors affirmer
+	\[\Li{\frac1p}=\left\{
+	\begin{array}{ll}
+		0      & \forall t<0\\
+		\alpha & \text{arbitraire pour }t=0\\
+		1      & \forall t>0
+	\end{array}\right.\]
+	On note que la transformée inverse ne permet pas de donner les valeurs de la fonction temporelle en ses points de discontinuité. Il faut les fixer arbitrairement.
+\end{example}
+
+La résolution d'une transformée inverse peut se faire à l'intégrale dite de Mellin-Fourier :
+\[\Li{F(p)}=\frac1{2\pi j}\int_{c-j\infty}^{c+j\infty}F(p)\,e^{pt}\diff{p}\]
+
+Il s'agit d'une intégrale à variable complexe dont le domaine d'intégration est délimité dans le plan complexe par la droite $\Re(z)=c$ et fermée à gauche de manière à contenir toutes les singularités\footnote{Par \emph{singularité}, on parle ici des pôles, racines du dénominateur de la fraction rationnelle que constitue $F(p)$.} de $F(p)$.
+
+\subsection{Théorème des résidus}
+
+Soit un point isolé $a$ de la fonction $F(p)$. On peut représenter $F(p)$ autour de $a$, dans un cercle de centre $a$ et de rayon arbitrairement petit, par sa série de Laurent.
 \end{document}
