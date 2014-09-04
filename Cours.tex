@@ -13,6 +13,8 @@
 \usepackage{fullpage} % Pour les marges
 \usepackage{setspace} % Pour les espaces
 \usepackage{array} % Pour les tableaux
+\usepackage{tikz} % Pour les graphes
+\usepackage{pgfplots} % Pour les fonctions
 
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
@@ -88,7 +90,7 @@ On rappelle que $t$ est la variable du domaine temporel et $p=\sigma+j\omega$ un
 		\L{\cos t} & = \int_0^\infty\cos t\,e^{-pt}\diff{t}
 	\end{align*}
 	
-	Ici, le calcul est tout de suite plus compliqué, on peut alors utiliser les propriétés de la transformation de Laplace et des tables de transformées. Ici, on pourrait passer par le binôme de Newton et calculer la transformée de l'exponentielle
+	Ici, le calcul est tout de suite plus compliqué, on peut alors utiliser les propriétés de la transformation de Laplace et des tables de transformées. Ici, on pourrait transformer le cosinus en exponentielle et calculer la transformée de l'exponentielle
 	\begin{align*}
 	\L{e^t} & = \int_0^\infty e^t\,e^{-pt}\diff{t}\\
 	        & = \int_0^\infty e^{-(p-1)t}\diff{t}\\
@@ -215,4 +217,14 @@ Il s'agit d'une intégrale à variable complexe dont le domaine d'intégration est 
 \subsection{Théorème des résidus}
 
 Soit un point isolé $a$ de la fonction $F(p)$. On peut représenter $F(p)$ autour de $a$, dans un cercle de centre $a$ et de rayon arbitrairement petit, par sa série de Laurent.
+
+
+\begin{tikzpicture}[x=0.5cm,y=2cm]
+	\begin{axis} [ 
+		xlabel=$x$,
+		x=0.25cm
+	]
+	\addplot[domain=-20:20,samples=1000]{sin(deg(x))}; 
+	\end{axis}
+\end{tikzpicture}
 \end{document}
