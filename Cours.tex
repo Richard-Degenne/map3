@@ -31,6 +31,7 @@
 \renewcommand{\L}[1]{\mathcal{L}\left\{#1\right\}}
 \newcommand{\Z}[1]{\mathcal{Z}\left\{#1\right\}}
 \newcommand{\Li}[1]{\mathcal{L}^{-1}\left\{#1\right\}}
+\newcommand{\Zi}[1]{\mathcal{Z}^{-1}\left\{#1\right\}}
 \onehalfspacing
 \onehalfspacing
 
@@ -381,7 +382,7 @@ On ne connaît aucun développement limité de cette forme-ci. On utilise donc les 
 
 \subsection{Linéarité}
 
-\[\Z{a\,x_k + b\,y_k} = a\,X_k(z) + b\,Y_k(z)\]
+\[\Z{a\,x_k + b\,y_k} = a\,X(z) + b\,Y(z)\]
 
 \subsection{Retard}
 
@@ -389,11 +390,11 @@ On ne connaît aucun développement limité de cette forme-ci. On utilise donc les 
 \Z{x_{k-1}} & = \sum_{k\geq0}x_{k-1}\,z^{-k}\\
             & = \sum_{k\geq0}x_{k-1}\,z^{-(k-1)} \times z^{-1}\\
 	    & = z^{-1}\sum_{k\geq0}x^k\,z^{-k}\\
-	    & = z^{-1}\,X_k(z)\\
+	    & = z^{-1}\,X(z)\\
 \end{align*}
 
 $z^{-1}$ est appelé opérateur de retard de la transformée en $\mathcal{Z}$. D'une manière générale, on peut écrire
-\[\Z{x_{k-r}} = z^{-r}\,X_k(z)\]
+\[\Z{x_{k-r}} = z^{-r}\,X(z)\]
 
 \subsection{Avance}
 
@@ -404,23 +405,23 @@ Bien que la notion d'avance n'aie aucune réalité physique\footnote{Aucun évèneme
             & = \sum_{k\geq0}x_{k+1}\,z^{-(k+1)}\times z\\
             & = z\sum{k\geq1}x^k\,z^{-k}\\
             & = z\left(\sum_{k\geq0}x^k\,z^{-k}-x_0\right)\\
-            & = z\,X_k(z)-z\,x_0
+            & = z\,X(z)-z\,x_0
 \end{align*}
 
 Encore une fois, on peut généraliser cette formule à toute avance $r$.
-\[\Z{x_{k+r}} = z^r\,X_k(z) - z^r\,x_0 - z^{r-1}\,x_1 - \dotsb - z\,x_{r-1}\]
+\[\Z{x_{k+r}} = z^r\,X(z) - z^r\,x_0 - z^{r-1}\,x_1 - \dotsb - z\,x_{r-1}\]
 
 \subsection{Comportement asymptotique}
 
 \subsubsection{Théorème de la valeur initiale}
 
 \begin{align*}
-X_k(z) & = \sum_{k\geq0}x_k\,z^{-k}\\
+X(z) & = \sum_{k\geq0}x\,z^{-k}\\
        & = x_0 + x_1\,z^{-1} + x_2\,z^{-2} + \dotsb\\
 \end{align*}
 
 En posant $z=\infty$, tous les termes sauf le premier s'annulent. On en déduit
-\[\lim_{z\to\infty}X_k(z) = x_0\]
+\[\lim_{z\to\infty}X(z) = x_0\]
 
 \subsubsection{Théorème de la valeur finale}
 
@@ -428,14 +429,14 @@ On va poser ici $e_k = x_k - x_{k-1}$.
 
 \begin{align*}
 \Z{e_k} & = \Z{x_k - x_{k-1}}\\
-        & = X_k(z) - z^{-1}\,X_k(z)\\
-        & = (1-z^{-1})X_k(z)\\
+        & = X(z) - z^{-1}\,X(z)\\
+        & = (1-z^{-1})X(z)\\
 \Z{e_k} & = \sum_{k\geq0}e_k\,z^{-k}\\
         & = \sum_{k\geq0}(x_k - x_{k-1})z^{-k}\qquad\text{(La somme se téléscope.)}
 \end{align*}
 
 D'où le théorème
-\[\lim_{k\to\infty}x_k=\lim_{z\to1}(1-z^{-1})X_k(z)\]
+\[\lim_{k\to\infty}x_k=\lim_{z\to1}(1-z^{-1})X(z)\]
 
 \subsection{Intégration discrète}
 
@@ -445,10 +446,126 @@ On peut utiliser la transformée en $\mathcal{Z}$ pour traiter des séries. Soit $
 On va chercher ici à exprimer $\Z{S_k}$ en fonction de $\Z{x_k}$.
 \begin{align*}
 \Z{S_k}          & = \Z{\underbrace{\sum_{j=0}^{k-1}x_j}_{S_{k-1}} + x_k}\\
-                 & = z^{-1}\,S_k(z) + X_k(z)\\
-(1-z^{-1})S_k(z) & = X_k(z)\\
-S_k(z)           & = \frac{1}{1-z^{-1}}X_k(z)
+                 & = z^{-1}\,S(z) + X(z)\\
+(1-z^{-1})S(z)   & = X(z)\\
+S(z)             & = \frac{1}{1-z^{-1}}X(z)\\
+                 & = \frac{z}{z-1}X(z)
 \end{align*}
 
-Inversement, on a $X_k(z) = S_k(z) - z^{-1}\,S_k(z)$.
+Inversement, on a $X(z) = S(z) - z^{-1}\,S(z)$.
+
+\begin{example}
+On pose $x_k = 1$ et $S_k = k$. On veut trouver $S(z)$. On établit la série liant $x_k$ à $S_k$.
+\[S_k=\sum_{i=0}^{k}(x_k) - 1\]
+
+En effet, en $k=0$, $x_k=1$ et $S_k=0$. On reprend la transformée en $\mathcal{Z}$ de $1$ vue au début du chapitre et on applique la formule sur l'intégration discrète.
+
+\begin{figure}[h!]
+	\begin{center}
+	\begin{tikzpicture}
+		\draw[->] (-0.1,0) -- (5,0) node[anchor=north west]{$k$};
+		\draw[->] (0,-0.1) -- (0,5);
+		\foreach \x in {1,2,3,4} {
+			\draw (\x,2pt) -- (\x,-2pt) node[anchor=north]{$\x$};
+			\draw (2pt,\x) -- (-2pt,\x) node[anchor=east]{$\x$};
+			\fill [red] (\x,1) circle(2pt) node[anchor=south]{$x_{\x}$};
+			\fill [blue] (\x,\x) circle(1.5pt) node[anchor=east]{$S_{\x}$};
+		}
+		\fill [red] (0,1) circle(2pt);
+		\fill [blue] (0,0) circle(1.5pt);
+	\end{tikzpicture}
+	\end{center}
+	\caption{Premiers termes de $x_k$ et $S_k$}
+\end{figure}
+\begin{align*}
+S(z) & = \frac{z}{z-1}\times\frac{z}{z-1} - \frac{z}{z-1}\\
+     & = \frac{z}{(z-1)^2}
+\end{align*}
+
+On peut utiliser cette méthode pour retrouver la transformée de certaines suites usuelles. Posons $T_k=\sum_{j=0}^{k}S_j=\frac{k(k+1)}{2}$. D'après la formule sur l'intégration discrète, on a
+\begin{align*}
+\Z{T_k}             & = \frac{z}{z-1}\times\frac{z}{(z-1)^2}\\
+                    & = \frac{z^2}{(z-1)^3}\\
+\frac{z^2}{(z-1)^3} & =\Z{\frac{k(k+1)}{2}}\\
+                    & = \frac12\Z{k^2} + \frac12\Z{k}\\
+                    & = \frac{z}{2(z-1)^2}+\frac12\Z{k^2}\\
+\Z{k^2}             & = \frac{z(z+1)}{(z-1)^3}
+\end{align*}
+\end{example}
+
+\subsection{Convolution discrète}
+
+On pose $z_k = \sum_{k\geq0}x_i\,y_{k-i}$.
+
+\[\Z{z_k} = X(z)\,Y(z)\]
+
+\section{Inversion de la transformée}
+
+De manière théorique, on appelle transformée inverse en $\mathbb{Z}$ l'opération notée $\mathbb{Z}^{-1}$ définie par
+\[\Zi{X(z)} = \frac{1}{2\pi j}\int_\mathcal{C}z^{k-1}\,X(z)\diff{z}\]
+où $\mathcal{C}$ est un cercle du plan complexe centré sur l'origine et contenant toutes les singularités de X(z). Pour résoudre cette intégrale, on utilise le théorème des résidus appliqué à $z^{k-1}\,X(z)$.
+
+\begin{example}{$\Zi{\frac{z}{z-1}}$}
+
+La fonction ne présente qu'un pôle d'ordre $1$ en $z=1$. On va donc calculer le résidu en $z=1$.
+
+\begin{align*}
+r_{-1}(1) & = \frac{1}{0!}\left(\frac{\partial^0}{\partial z^0}(z-1)^{k-1}\frac{z}{z-1}\right)_{z=1}\\
+          & = [z^k]_{z=1}\\
+          & = 1\\
+\end{align*}
+\end{example}
+
+\pagebreak
+
+\chapter{Fonctions de matrices}
+
+Ce document n'abordera pas la théorie régissant les fonctions de matrices, mais se contentera de décrire la méthode d'application.
+
+L'évaluation d'une fonction de matrice de fait grâce à la formule suivante.
+
+\[f(A) = \sum_{i=1}^{r}\sum_{j=0}^{\nu_i -1}\left[\frac{\partial^j f(\lambda)}{\partial\lambda^j}\right]_{\lambda=\lambda_i}Z_{ij}\]
+où
+
+\begin{description}
+	\item[$f$]{: La fonction à évaluer}
+	\item[$A$]{: Une matrice carrée de dimension $n$}
+	\item[$r$]{: Le nombre de valeurs propres $\lambda_1,\lambda_2,\dotsc,\lambda_r$ de $A$}
+	\item[$\nu_i$]{: La multiplicité de $\lambda_i$}
+	\item[$Z_{ij}$]{: Les matrices constituantes (ou composantes) associées à $A$}
+\end{description}
+
+\begin{example}
+Soit $A=\begin{pmatrix}4&3\\-2&-1\end{pmatrix}$. Calculer $A^k$.
+
+\paragraph{Calcul des valeurs propres de $A$.}
+
+On appelle valeurs propres de $A$ les racines du polynôme $\det(\lambda I-A)$, où $I$ est la matrice identité.
+
+\begin{align*}
+A                   & = \begin{pmatrix}4&3\\-2&-1\end{pmatrix}\\
+\lambda I - A       & = \begin{pmatrix}\lambda-4&-3\\2&\lambda+1\end{pmatrix}\\
+\det(\lambda I - A) & = (\lambda-1)(\lambda-2)\\
+\end{align*}
+
+On a donc deux valeurs propres, $\lambda_1=1$ et $\lambda_2=2$, chacune avec un multiplicité de $1$.
+
+\paragraph{Écriture de $f(A)$.} Maintenant que l'on connaît les valeurs propres et leurs multiplictés, on peut développer les deux sommes de la formule.
+
+\begin{align*}
+f(A) & = \big[f(\lambda)\big]_{\lambda=\lambda_1} Z_{10} + \big[f(\lambda)\big]_{\lambda=\lambda_2} Z_{20}\\
+     & = f(\lambda_1)Z_1 + f(\lambda_2)Z_2\\
+\end{align*}
+
+\paragraph{Calcul de $Z_1$ et $Z_2$.} Dans la mesure où l'égalité établie ci-dessus est vraie pour tout fonction $f$, on va prendre des fonctions judicieuses pour construire un système d'équations permettant de déterminer $Z_1$ et $Z_2$.
+
+\begin{align*}
+f(\lambda) = \lambda-1 & \implies A-I  = Z_2\\
+f(\lambda) = \lambda-2 & \implies 2I-A = Z_1\\
+\end{align*}
+
+\paragraph{Application numérique.} On a donc $f(A) = f(1)(2I-A) + f(2)(A-I)$. Si on pose $f(\lambda)=\lambda^k$, alors on a
+\[A^k=\begin{pmatrix}3\times2^k-2 & 3(2^k-1)\\-2(2^k-1) & -2^{k+1}+3\end{pmatrix}\]
+\end{example}
+
 \end{document}
