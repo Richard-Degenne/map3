@@ -501,7 +501,7 @@ On pose $z_k = \sum_{k\geq0}x_i\,y_{k-i}$.
 
 \section{Inversion de la transformée}
 
-De manière théorique, on appelle transformée inverse en $\mathbb{Z}$ l'opération notée $\mathbb{Z}^{-1}$ définie par
+De manière théorique, on appelle transformée inverse en $\mathcal{Z}$ l'opération notée $\mathcal{Z}^{-1}$ définie par
 \[\Zi{X(z)} = \frac{1}{2\pi j}\int_\mathcal{C}z^{k-1}\,X(z)\diff{z}\]
 où $\mathcal{C}$ est un cercle du plan complexe centré sur l'origine et contenant toutes les singularités de X(z). Pour résoudre cette intégrale, on utilise le théorème des résidus appliqué à $z^{k-1}\,X(z)$.
 
@@ -510,7 +510,7 @@ où $\mathcal{C}$ est un cercle du plan complexe centré sur l'origine et contenan
 La fonction ne présente qu'un pôle d'ordre $1$ en $z=1$. On va donc calculer le résidu en $z=1$.
 
 \begin{align*}
-r_{-1}(1) & = \frac{1}{0!}\left(\frac{\partial^0}{\partial z^0}(z-1)^{k-1}\frac{z}{z-1}\right)_{z=1}\\
+r_{-1}(1) & = \frac{1}{0!}\left(\frac{\partial^0}{\partial z^0}z^{k-1}\,(z-1)^{k-1}\frac{z}{z-1}\right)_{z=1}\\
           & = [z^k]_{z=1}\\
           & = 1\\
 \end{align*}
